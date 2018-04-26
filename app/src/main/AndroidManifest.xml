@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.synle.counterfeit_goods_tracker">
+
+    <!--use for api calls...-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AuthenticationOption" />
+        <activity android:name=".AuthenticationConsumer" />
+        <activity android:name=".AuthenticationAgency" />
+        <activity android:name=".DashboardAgency" />
+        <activity android:name=".DashboardConsumer" />
+        <activity android:name=".ItemHistory" />
+        <activity android:name=".ItemCreation" />
+        <activity android:name=".ItemUpdate" />
+        <activity android:name=".SettingAgency" />
+        <activity android:name=".SettingCustomer" />
+        <activity android:name=".ItemSearchForm" />
+        <activity android:name=".ItemSearchResult"></activity>
+    </application>
+
+</manifest>
