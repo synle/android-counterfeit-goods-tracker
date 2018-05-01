@@ -4,8 +4,14 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.RestClient;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
+
+import org.androidannotations.rest.spring.annotations.RestService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -23,4 +29,5 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.synle.counterfeit_goods_tracker", appContext.getPackageName());
     }
+
 }
