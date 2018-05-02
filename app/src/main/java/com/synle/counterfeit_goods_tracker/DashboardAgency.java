@@ -33,7 +33,7 @@ public class DashboardAgency extends AppCompatActivity {
 
 
     protected void onClickSettings(View v){
-        Intent intent = new Intent(this, SettingAgency.class);
+        Intent intent = new Intent(this, Setting.class);
         startActivity(intent);
     }
 

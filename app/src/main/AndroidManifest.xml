@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.synle.counterfeit_goods_tracker">
 
-    <!--use for api calls...-->
+    <!-- use for api calls... -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -27,10 +27,9 @@
         <activity android:name=".ItemHistory" />
         <activity android:name=".ItemCreation" />
         <activity android:name=".ItemUpdate" />
-        <activity android:name=".SettingAgency" />
-        <activity android:name=".SettingCustomer" />
         <activity android:name=".ItemSearchForm" />
-        <activity android:name=".ItemSearchResult"></activity>
+        <activity android:name=".ItemSearchResult" />
+        <activity android:name=".Setting"></activity>
     </application>
 
 </manifest>

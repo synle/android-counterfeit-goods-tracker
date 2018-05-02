@@ -41,4 +41,5 @@
     <string name="site_location">Site Location:</string>
     <string name="logout">Log Out</string>
     <string name="errorSiteLocSiteNameRequired">Site Name / Site Location required</string>
+    <string name="auth_other_option">Other authentication options</string>
 </resources>

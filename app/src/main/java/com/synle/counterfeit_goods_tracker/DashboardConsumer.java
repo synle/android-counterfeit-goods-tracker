@@ -35,7 +35,7 @@ public class DashboardConsumer extends AppCompatActivity {
 
 
     public void onClickSettings(View v){
-        Intent intent = new Intent(this, SettingCustomer.class);
+        Intent intent = new Intent(this, Setting.class);
         startActivity(intent);
     }
 }

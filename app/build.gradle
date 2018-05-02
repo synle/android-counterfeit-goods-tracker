@@ -49,7 +49,6 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
 }
 
-
 // https://stackoverflow.com/questions/36833606/android-support-library-error-after-updating-to-23-3-0
 configurations.all {
     resolutionStrategy {
