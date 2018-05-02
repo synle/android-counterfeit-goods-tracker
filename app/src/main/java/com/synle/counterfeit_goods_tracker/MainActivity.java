@@ -18,24 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                //TODO your background code
-//                DataUtil.getAllSites();
-//                DataUtil.getPrivateKeyForSite("site5");
-
-                Site s = new Site();
-                s.setName("Sy test 123");
-                s.setLocation("San Jose, CA");
-                s = DataUtil.createSite(s);
-                if(s.getPubkey() != null){
-
-                }
-            }
-        });
-
-
         String pref_key_site_prikey = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_prikey));
         if(pref_key_site_prikey.length() > 0){
             boolean isAgency = CommonUtil.getSettingValueAsBoolean(getApplicationContext(), getString(R.string.pref_key_is_agency));

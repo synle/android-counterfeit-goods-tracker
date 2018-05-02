@@ -52,7 +52,7 @@ public class DataUtil {
         }
     }
 
-    public static Site createSite(Site s) {
+    private static Site createSite(Site s) {
         final String url = getURL("/rest/regsite");
         final RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
@@ -73,17 +73,18 @@ public class DataUtil {
             if("Site name already exists.".equals(result)){
                 // key already existed
                 // BE is super funky, need to do this
-                return s;
+                return null;
             }
 
             // good response, set the public key
             // set public key
             s.setPubkey(result);
+
+            return s;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return s;
     }
 
 
@@ -97,4 +98,29 @@ public class DataUtil {
 
         return result;
     }
+
+
+    public static Site createSite(String siteName, String siteLocation) throws Exception{
+        Site s = new Site();
+        s.setName(siteName);
+        s.setLocation(siteLocation);
+
+        // create the site if possible
+        s = DataUtil.createSite(s);
+
+        if(s != null && s.getPubkey() != null){
+            // has pub key, now go and get private key...
+            String prikey = DataUtil.getPrivateKeyForSite(s.getName());
+            if(prikey != null){
+                // successfully create the site...
+                s.setPrikey(prikey);
+                return s;
+            } else {
+                throw new Exception("Private key cannot be downloaded");
+            }
+        }
+
+        throw new Exception("Site already existed");
+    }
+
 }
