@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CommonUtil;
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.DataUtil;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +23,15 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 //TODO your background code
 //                DataUtil.getAllSites();
-                DataUtil.getPrivateKey("site5");
+//                DataUtil.getPrivateKeyForSite("site5");
+
+                Site s = new Site();
+                s.setName("Sy test 123");
+                s.setLocation("San Jose, CA");
+                s = DataUtil.createSite(s);
+                if(s.getPubkey() != null){
+
+                }
             }
         });
 
