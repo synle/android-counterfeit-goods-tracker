@@ -33,6 +33,8 @@ public class ItemHistory extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.item_history));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_history);
 

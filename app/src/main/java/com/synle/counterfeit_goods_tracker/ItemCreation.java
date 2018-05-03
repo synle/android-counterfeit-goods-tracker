@@ -19,6 +19,8 @@ public class ItemCreation extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.new_item));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_creation);
 

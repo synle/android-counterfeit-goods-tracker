@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="@string/prompt_auth_option_agent"
             android:layout_marginTop="20dp"
-            android:padding="25dp"
+            android:padding="5dp"
             android:onClick="onClickLoginAgency"/>
 
         <Button
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="@string/prompt_auth_option_customer"
             android:layout_marginTop="30dp"
-            android:padding="25dp"
+            android:padding="5dp"
             android:onClick="onClickLoginCustomer"/>
     </LinearLayout>
 </ScrollView>

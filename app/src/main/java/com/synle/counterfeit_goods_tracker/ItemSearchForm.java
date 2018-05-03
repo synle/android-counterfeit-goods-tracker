@@ -11,6 +11,8 @@ public class ItemSearchForm extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.search_item));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_search_form);
 

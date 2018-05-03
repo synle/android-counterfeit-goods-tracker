@@ -10,6 +10,8 @@ public class ItemUpdate extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.update_item));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_update);
     }

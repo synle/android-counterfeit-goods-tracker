@@ -32,6 +32,8 @@ public class ItemSearchResult extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        setTitle(getString(R.string.search_item_results));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_search_result);
 

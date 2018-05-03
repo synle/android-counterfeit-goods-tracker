@@ -11,6 +11,7 @@ public class DashboardAgency extends DashboardBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.dashboard_welcome_agency));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_agency);
     }

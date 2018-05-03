@@ -11,6 +11,7 @@ import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.c
 public class Setting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.settings));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         setViewDataForSettingsForm();

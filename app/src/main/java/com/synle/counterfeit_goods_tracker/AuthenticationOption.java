@@ -9,6 +9,8 @@ public class AuthenticationOption extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(getString(R.string.login));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication_option);
     }

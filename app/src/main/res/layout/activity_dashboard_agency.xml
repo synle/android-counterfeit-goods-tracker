@@ -5,59 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.synle.counterfeit_goods_tracker.DashboardAgency">
-    <LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dashboard_welcome_agency"
-            android:textSize="35dp"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_item"
-            android:layout_marginTop="20dp"
-            android:padding="25dp"
-            android:onClick="onClickNewItem"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/search_item"
-            android:layout_marginTop="20dp"
-            android:padding="25dp"
-            android:onClick="onClickSearchItem"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/list_item"
-            android:layout_marginTop="20dp"
-            android:padding="25dp"
-            android:onClick="onClickListItem"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings"
-            android:layout_marginTop="20dp"
-            android:padding="25dp"
-            android:onClick="onClickSettings"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/logout"
-            android:layout_marginTop="40dp"
-            android:padding="25dp"
-            android:onClick="onClickLogOut"/>
-    </LinearLayout>
-</ScrollView>
-</LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_item"
+                android:padding="5dp"
+                android:onClick="onClickNewItem"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search_item"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:onClick="onClickSearchItem"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/list_item"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:onClick="onClickListItem"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:onClick="onClickSettings"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:layout_marginTop="40dp"
+                android:padding="5dp"
+                android:onClick="onClickLogOut"/>
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
