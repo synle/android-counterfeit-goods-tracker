@@ -1,6 +1,7 @@
 package com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Item;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
 import org.springframework.http.HttpEntity;
@@ -127,6 +128,14 @@ public class DataUtil {
     public static void searchItems(){
 
     }
+
+    public static String registerItem(Item newItem){
+        String respMD5 = "";
+
+
+        return respMD5;
+    }
+
 
     public static void createItem(){
 

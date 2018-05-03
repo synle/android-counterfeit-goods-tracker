@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.synle.counterfeit_goods_tracker.R;
+
 /**
  * Created by syle on 4/26/2018.
  */
@@ -14,6 +16,13 @@ public class CommonUtil {
         Toast toast = Toast.makeText(context, toastMessage, duration);
         toast.show();
     }
+
+//  common util
+    public static long getUnixTimestamp(){
+        long unixTime = System.currentTimeMillis() / 1000L;
+        return unixTime;
+    }
+
 
 //    pref
     public static String getSettingValue(Context context, String key){
@@ -52,5 +61,14 @@ public class CommonUtil {
         final String MY_PREFERENCE = "MY_PREFERENCE";
         SharedPreferences sharedpreferences = context.getSharedPreferences(MY_PREFERENCE, Context.MODE_PRIVATE);
         return sharedpreferences;
+    }
+
+
+
+//    key...
+    public static String getPayloadForItem(String itemName, String publicKey){
+        String payload = "";
+
+        return payload;
     }
 }
