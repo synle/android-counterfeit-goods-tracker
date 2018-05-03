@@ -22,6 +22,12 @@ public class DashboardBase extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    public void onClickListItem(View v){
+        Intent intent = new Intent(this, ItemSearchResult.class);
+        startActivity(intent);
+    }
+
     public void onClickLogOut(View v){
         CommonUtil.clearSetting(getApplicationContext());
         finish();

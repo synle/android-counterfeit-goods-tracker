@@ -42,4 +42,8 @@
     <string name="logout">Log Out</string>
     <string name="errorSiteLocSiteNameRequired">Site Name / Site Location required</string>
     <string name="auth_other_option">Other authentication options</string>
+    <string name="intent_key_search_keyword">searchKeyword</string>
+    <string name="list_item">List Items</string>
+    <string name="intent_key_item_id">item_id</string>
+    <string name="intent_key_item_name">item_name</string>
 </resources>

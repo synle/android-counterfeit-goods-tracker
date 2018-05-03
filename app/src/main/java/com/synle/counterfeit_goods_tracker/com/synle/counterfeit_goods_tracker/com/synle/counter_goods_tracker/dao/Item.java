@@ -14,6 +14,11 @@ public class Item {
     String hash;
 
 
+    @Override
+    public String toString() {
+        return getId() + " : " + getName();
+    }
+
     public String getId() {
         return id;
     }
