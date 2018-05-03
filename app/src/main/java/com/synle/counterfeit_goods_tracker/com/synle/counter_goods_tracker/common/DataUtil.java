@@ -52,8 +52,7 @@ public class DataUtil {
 //        https://springframework.guru/processing-json-jackson/
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            final Site[] sites = objectMapper.readValue(result, Site[].class);
-            return sites;
+            return objectMapper.readValue(result, Site[].class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -198,5 +197,22 @@ public class DataUtil {
         return restTemplate.getForObject(url, String.class, text, siteName);
     }
 
+
+    public static Item[] getAllItems(){
+        final String url = getURL("/rest/items");
+
+        final RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        String result = restTemplate.getForObject(url, String.class);
+
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(result, Item[].class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
