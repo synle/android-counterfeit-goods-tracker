@@ -130,10 +130,24 @@ public class DataUtil {
     }
 
     public static String registerItem(Item newItem){
-        String respMD5 = "";
+        // The connection URL
+        final String url = getURL("/rest/regitem");
 
 
-        return respMD5;
+        final RestTemplate restTemplate = new RestTemplate();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        try {
+            final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(newItem), headers);
+            final String result = restTemplate.postForObject(url, entity, String.class);
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
 

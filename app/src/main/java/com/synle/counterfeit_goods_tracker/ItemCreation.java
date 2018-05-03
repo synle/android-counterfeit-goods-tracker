@@ -30,10 +30,10 @@ public class ItemCreation extends AppCompatActivity {
 
 
         final String itemName = txtItemName.getText().toString();
-        final String itemId = pref_key_site_name + pref_key_site_location + "-" + CommonUtil.getUnixTimestamp();
+        final String itemId = pref_key_site_name  + "-" + pref_key_site_location + "-" + CommonUtil.getUnixTimestamp();
 
         // generate the payload for the item
-        final String payload = CommonUtil.getPayloadForItem(itemName, pref_key_site_pubkey);
+        final String payload = CommonUtil.getPayloadForItem(itemName, pref_key_site_prikey);
 
         final Item newItem = new Item();
         newItem.setName(itemName);

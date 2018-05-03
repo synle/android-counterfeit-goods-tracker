@@ -2,6 +2,8 @@ package com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.comm
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.synle.counterfeit_goods_tracker.R;
@@ -66,8 +68,14 @@ public class CommonUtil {
 
 
 //    key...
-    public static String getPayloadForItem(String itemName, String publicKey){
-        String payload = "";
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getPayloadForItem(String itemName, String priKeyString){
+        String payload = null;
+        try {
+            payload = CryptoUtil.rsaEncWithPlainKey(itemName, priKeyString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return payload;
     }
