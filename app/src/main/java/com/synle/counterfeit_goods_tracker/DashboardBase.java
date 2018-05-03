@@ -38,4 +38,10 @@ public class DashboardBase extends AppCompatActivity {
         Intent intent = new Intent(this, Setting.class);
         startActivity(intent);
     }
+
+    protected void onClickViewYourItems(View v){
+        Intent intent = new Intent(this, ItemSearchResult.class);
+        intent.putExtra(getString(R.string.intent_key_show_your_items), true);
+        startActivity(intent);
+    }
 }

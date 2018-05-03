@@ -50,7 +50,7 @@ public class AuthenticationBase extends AppCompatActivity {
     }
 
     private void onActionError(){
-        CommonUtil.showToastMessage(getApplicationContext(), "This site name is no longer available, please choose a different name...");
+        CommonUtil.showToastMessage(getApplicationContext(), "This currentSite name is no longer available, please choose a different name...");
     }
 
 

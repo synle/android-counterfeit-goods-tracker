@@ -9,13 +9,14 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CommonUtil;
-import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CryptoUtil;
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.DataUtil;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Item;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
 public class ItemCreation extends AppCompatActivity {
     EditText txtItemName;
+
+    Site currentSite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +31,17 @@ public class ItemCreation extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClickSave(View v){
-        Site site = new Site(getApplicationContext(), getString(R.string.pref_key_site_name), getString(R.string.pref_key_site_location), getString(R.string.pref_key_site_prikey), getString(R.string.pref_key_site_pubkey));
+        currentSite = new Site(getApplicationContext(), getString(R.string.pref_key_site_name), getString(R.string.pref_key_site_location), getString(R.string.pref_key_site_prikey), getString(R.string.pref_key_site_pubkey));
 
         final String itemName = txtItemName.getText().toString();
-        final String itemId = site.getName() + "-" + CommonUtil.getUnixTimestamp();
+        final String itemId = currentSite.getName() + "-" + CommonUtil.getUnixTimestamp();
 
         // generate the payload for the item
         final Item newItem = new Item();
         newItem.setName(itemName);
         newItem.setId(itemId);
-        newItem.setNextpubkey(site.getPubkey());
-        new MyAsyncTask(newItem, site).execute();
+        newItem.setNextpubkey(currentSite.getPubkey());
+        new MyAsyncTask(newItem, currentSite).execute();
     }
 
 
@@ -60,11 +61,9 @@ public class ItemCreation extends AppCompatActivity {
 
     private class MyAsyncTask extends AsyncTask<String, Void, Item> {
         Item item;
-        Site site;
 
         public MyAsyncTask(Item item, Site site){
             this.item = item;
-            this.site = site;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,7 +72,7 @@ public class ItemCreation extends AppCompatActivity {
         protected Item doInBackground(String... params) {
             try {
 //                1.	Find an item ID and encrypt it with the private key file
-                final String newPayload = DataUtil.encrypt(site.getName(), item.getId());
+                final String newPayload = DataUtil.encrypt(currentSite.getName(), item.getId());
 
                 // register the item
                 item.setPayload(newPayload);
@@ -82,7 +81,7 @@ public class ItemCreation extends AppCompatActivity {
 
 
 //                2.	Encrypt MD5 with private key like III.1.
-                final String newPayload2 = DataUtil.encrypt(site.getName(), item.getHash());
+                final String newPayload2 = DataUtil.encrypt(currentSite.getName(), item.getHash());
                 item.setPayload(newPayload);
 
                 // append it

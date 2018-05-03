@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ItemSearchResult extends ListActivity {
+    Site currentSite;
     String searchKeyword;
     boolean showYourItems = false;
     TextView txtSearchKeyWord;
@@ -34,9 +35,11 @@ public class ItemSearchResult extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setTitle(getString(R.string.search_item_results));
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_search_result);
+
+        currentSite = new Site(getApplicationContext(), getString(R.string.pref_key_site_name), getString(R.string.pref_key_site_location), getString(R.string.pref_key_site_prikey), getString(R.string.pref_key_site_pubkey));
+
 
         // get the search keyword and populate it in the text
         Intent intent = getIntent();
@@ -93,7 +96,13 @@ public class ItemSearchResult extends ListActivity {
         }
         System.out.println("all items:" + items.length);
         System.out.println("matched items:" + listItems.size());
+
         adapter.notifyDataSetChanged();
+
+
+        if(listItems.size() == 0){
+            CommonUtil.showToastMessage(getApplicationContext(), "No Matched Item Found...");
+        }
     }
 
 
@@ -104,7 +113,7 @@ public class ItemSearchResult extends ListActivity {
                 if(showYourItems == false){
                     return DataUtil.getAllItems();
                 } else {
-                    return DataUtil.getYourItems();
+                    return DataUtil.getYourItems(currentSite.getPubkey());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

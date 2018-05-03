@@ -232,7 +232,20 @@ public class DataUtil {
         }
     }
 
-    public static Item[] getYourItems() {
-        return null;
+    public static Item[] getYourItems(String pubkey) {
+        final String url = getURL("/rest/fetch?pk={pubkey}");
+
+        final RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        String result = restTemplate.getForObject(url, String.class, pubkey);
+
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(result, Item[].class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

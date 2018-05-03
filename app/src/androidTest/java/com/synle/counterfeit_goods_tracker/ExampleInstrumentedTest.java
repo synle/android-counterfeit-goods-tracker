@@ -6,6 +6,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CryptoUtil;
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.DataUtil;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Item;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,37 +36,35 @@ public class ExampleInstrumentedTest {
 
 
     @Test
-    public void testEncryptDescryptWithAndroidContext(){
-        try {
-            String description = "a-sy-test";
-            List<String> strings1 = Files.readAllLines(FileSystems.getDefault().getPath("/tmp/" + description + ".key"));
-            List<String> strings2 = Files.readAllLines(FileSystems.getDefault().getPath("/tmp/" + description + ".pub"));
-
-            String newLine = "\n";
-            String priKey = strings1.stream().collect(Collectors.joining(newLine));
-            String pubKey = strings2.stream().collect(Collectors.joining(newLine));
-
-            String code1 = CryptoUtil.rsaEncWithPlainKey("abcdef", priKey);
-            String code2 = CryptoUtil.rsaDecWithPlainKey(code1, pubKey);
+    public void testApiGetAllSites(){
+        Site[] sites = DataUtil.getAllSites();
+        assertTrue("DataUtil.getAllSites should return", sites.length > 0);
+    }
 
 
+    @Test
+    public void testApiGetAllItems(){
+        Item[] items = DataUtil.getAllItems();
+        assertTrue("DataUtil.getAllItems should return", items.length > 0);
+    }
 
-            System.out.println("123");
-            System.out.println(code1);
-            System.out.println(code2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        List<String> strings2 = Files.readAllLines(new Path("/tmp/" + description + ".pub"));
 
-//        try {
-//            String keyfile = "/tmp/" + description + ".key";
-//            String code1 = CryptoUtil.rsaEnc("abc", keyfile);
-////            String code2 = CryptoUtil.rsaDec("abc", description);
-//
-//            System.out.println(code1);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    @Test
+    public void testGetItemHistory(){
+        String[] items = DataUtil.getItemHistory("ABC123");
+        assertTrue("DataUtil.getItemHistory should return", items.length > 0);
+    }
+
+
+    @Test
+    public void testCreateItem(){
+        assertTrue("DataUtil.test create item", true);
+    }
+
+
+    @Test
+    public void testGetYourItems(){
+        Item[] items = DataUtil.getYourItems("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAskifo4Vr0+dILiXnoOTEkOMKEBbnJyXigZemO5hSOWQaI9jftH3+sFtn5Z1dzeUDtJlUGUlUqRxssdH0OOw8tPIYy2ao5wQuRymBQ9r14/PIxl0JEomnw1hz7N22QGZDjPwy7tuxm7J0zfX2oOe902bdW18lvTNi/tCm+P7lC3PpfofsuWVvij0fFQwuYxyxZZIM1yQqfVZ3+y2yFY5KRXBMON9vBmQzCa4qMNZOLnQjgwL2TaapAlMts/ZBuGMD8jHcXGZmC0X6vOBPv4nax8Gll/W85G6vFq4H5/+aq7RObcFvMIhN+gdIMtlvgZyCOnVxBBYgWIcNw/63FxUHJwIDAQAB");
+        assertTrue("DataUtil.getItemHistory should return", true);
     }
 }

@@ -36,6 +36,13 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/your_items"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:onClick="onClickViewYourItems"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/settings"
                 android:layout_marginTop="20dp"
                 android:padding="5dp"
