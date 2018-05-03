@@ -7,6 +7,12 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.synle.counterfeit_goods_tracker.R;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by syle on 4/26/2018.
@@ -78,5 +84,22 @@ public class CommonUtil {
         }
 
         return payload;
+    }
+
+
+    public static Site[] getMappedSitesBySiteIds(String[] historySiteIds){
+        Site[] allSites = DataUtil.getAllSites();
+        Map<String, Site> hashAllSites = new HashMap<>();
+        for(Site site: allSites){
+            hashAllSites.put(site.getPubkey(), site);
+        }
+
+        List<Site> matchedSites = new ArrayList<>();
+        for(String siteId : historySiteIds){
+            Site s = hashAllSites.get(siteId);
+            matchedSites.add(s);
+        }
+
+        return matchedSites.toArray(new Site[matchedSites.size()]);
     }
 }

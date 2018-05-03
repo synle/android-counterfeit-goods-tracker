@@ -24,6 +24,7 @@ import java.util.List;
 
 public class ItemSearchResult extends ListActivity {
     String searchKeyword;
+    boolean showYourItems = false;
     TextView txtSearchKeyWord;
 
 //    mainly used for the list.
@@ -40,6 +41,9 @@ public class ItemSearchResult extends ListActivity {
         // get the search keyword and populate it in the text
         Intent intent = getIntent();
         searchKeyword = intent.getStringExtra(getString(R.string.intent_key_search_keyword));
+        showYourItems = intent.getBooleanExtra(getString(R.string.intent_key_show_your_items), false);
+
+//        populate the search
         txtSearchKeyWord = findViewById(R.id.txtSearchKeyWord);
         txtSearchKeyWord.setText(searchKeyword);
 
@@ -97,7 +101,11 @@ public class ItemSearchResult extends ListActivity {
         @Override
         protected Item[] doInBackground(String... params) {
             try {
-                return DataUtil.getAllItems();
+                if(showYourItems == false){
+                    return DataUtil.getAllItems();
+                } else {
+                    return DataUtil.getYourItems();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

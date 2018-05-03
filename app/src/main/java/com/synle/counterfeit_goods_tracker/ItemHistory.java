@@ -89,19 +89,7 @@ public class ItemHistory extends ListActivity {
         protected Site[] doInBackground(String... params) {
             try {
                 String[] historySiteIds = DataUtil.getItemHistory(params[0]);
-                Site[] allSites = DataUtil.getAllSites();
-                Map<String, Site> hashAllSites = new HashMap<>();
-                for(Site site: allSites){
-                    hashAllSites.put(site.getPubkey(), site);
-                }
-
-                List<Site> matchedSites = new ArrayList<>();
-                for(String siteId : historySiteIds){
-                    Site s = hashAllSites.get(siteId);
-                    matchedSites.add(s);
-                }
-
-                return matchedSites.toArray(new Site[matchedSites.size()]);
+                return CommonUtil.getMappedSitesBySiteIds(historySiteIds);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
