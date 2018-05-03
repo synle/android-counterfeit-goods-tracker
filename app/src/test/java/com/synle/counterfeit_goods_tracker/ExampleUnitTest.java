@@ -51,6 +51,8 @@ public class ExampleUnitTest {
 
 
             System.out.println("123");
+            System.out.println(code1);
+            System.out.println(code2);
         } catch (Exception e) {
             e.printStackTrace();
         }

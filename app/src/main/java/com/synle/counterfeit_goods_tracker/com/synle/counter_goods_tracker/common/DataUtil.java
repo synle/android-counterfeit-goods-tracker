@@ -28,7 +28,12 @@ public class DataUtil {
 
 
     public static String getURL(String url){
-        return "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828" + url;
+        String url2 = "http://10.0.2.2:3000" + url;
+//        String url2 = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828" + url;
+
+        System.out.println("url: " + url2);
+
+        return url2;
     }
 
     public static Site[] getAllSites(){
@@ -129,7 +134,7 @@ public class DataUtil {
 
     }
 
-    public static String registerItem(Item newItem){
+    public static Item registerItem(Item newItem){
         // The connection URL
         final String url = getURL("/rest/regitem");
 
@@ -142,7 +147,9 @@ public class DataUtil {
         try {
             final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(newItem), headers);
             final String result = restTemplate.postForObject(url, entity, String.class);
-            return result;
+
+            newItem.setHash(result);
+            return newItem;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

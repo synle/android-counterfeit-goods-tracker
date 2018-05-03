@@ -1,5 +1,8 @@
 package com.synle.counterfeit_goods_tracker;
 
+import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +25,7 @@ public class ItemCreation extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClickSave(View v){
         String pref_key_site_name = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_name));
         String pref_key_site_location = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_location));
@@ -41,13 +45,49 @@ public class ItemCreation extends AppCompatActivity {
         newItem.setNextpubkey(pref_key_site_pubkey);
         newItem.setPayload(payload);
 
-
-        // register the item
-        DataUtil.registerItem(newItem);
+        new MyAsyncTask(newItem).execute();
     }
 
 
     public void onClickCancel(View v) {
         finish();
+    }
+
+    public void onActionError(){
+
+    }
+
+    public void onActionSucess(Item i){
+        System.out.println("action success");
+        System.out.println(i);
+    }
+
+
+    private class MyAsyncTask extends AsyncTask<String, Void, Item> {
+        Item item;
+        public MyAsyncTask(Item newItem){
+            this.item = newItem;
+        }
+
+        @Override
+//        name, location
+        protected Item doInBackground(String... params) {
+            try {
+                // register the item
+                Item i = DataUtil.registerItem(this.item);
+                return i;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        @Override
+        public void onPostExecute(Item i) {
+            if(i == null){
+                onActionError();
+            } else {
+                onActionSucess(i);
+            }
+        }
     }
 }

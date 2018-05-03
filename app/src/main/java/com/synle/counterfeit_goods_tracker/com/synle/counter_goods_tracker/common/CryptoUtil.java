@@ -10,6 +10,7 @@ package com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.comm
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import org.apache.commons.codec.DecoderException;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
@@ -61,7 +62,7 @@ public class CryptoUtil{
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, getPrivateKeyWithPlainKey(factory, keyContent));
         byte[] encrypted = cipher.doFinal(text.getBytes());
-        String hex = DatatypeConverter.printHexBinary(encrypted);
+        String hex = printHexBinary(encrypted);
         return hex;
     }
 
@@ -70,7 +71,7 @@ public class CryptoUtil{
         KeyFactory factory = KeyFactory.getInstance("RSA");
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, getPublicKeyWithPlainKey(factory, keyContent));
-        byte[] bt = cipher.doFinal(DatatypeConverter.parseHexBinary(text));
+        byte[] bt = cipher.doFinal(parseHexBinary(text));
 
         String ret = new String(bt);
         return ret;
@@ -88,7 +89,7 @@ public class CryptoUtil{
         md.update(text.getBytes());
         byte byteData[] = md.digest();
 
-        String hexString = DatatypeConverter.printHexBinary(byteData);
+        String hexString = printHexBinary(byteData);
         return hexString.toString();
     }
 
@@ -113,8 +114,32 @@ public class CryptoUtil{
         return factory.generatePublic(pubKeySpec);
     }
 
+    //    https://stackoverflow.com/questions/34342136/alternatives-for-datatypeconverter-in-android?noredirect=1&lq=1
+    private static byte[] parseHexBinary(String text){
+        try {
+            return org.apache.commons.codec.binary.Hex.decodeHex(text.toCharArray());
+        } catch (DecoderException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
+    private static String printHexBinary (byte[] encrypted){
+        return android.util.Base64.encodeToString(encrypted, 16);
+    }
+
+
+//    private static byte[] parseHexBinary2(String text){
+//        return DatatypeConverter.parseHexBinary(text);
+//    }
+//
+//    private static String printHexBinary2 (byte[] encrypted){
+//        return DatatypeConverter.printHexBinary(encrypted);
+//    }
+
+
+// pem files
     private static class PemFile {
 
         private PemObject pemObject;
@@ -149,5 +174,4 @@ public class CryptoUtil{
             return pemObject;
         }
     }
-
 }
