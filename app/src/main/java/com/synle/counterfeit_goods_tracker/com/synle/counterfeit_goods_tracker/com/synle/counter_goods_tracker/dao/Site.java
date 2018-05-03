@@ -31,6 +31,11 @@ public class Site {
         this.prikey = prikey;
     }
 
+    @Override
+    public String toString() {
+        return name + " - " + location;
+    }
+
     public String getName() {
         return name;
     }

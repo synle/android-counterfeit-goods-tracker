@@ -68,7 +68,7 @@ public class ItemSearchResult extends ListActivity {
     }
 
     public void onActionError(){
-        CommonUtil.showToastMessage(getApplicationContext(), "Something is wrongw with the search result");
+        CommonUtil.showToastMessage(getApplicationContext(), "Something is wrong with the search result");
     }
 
     public void onActionSucess(Item[] items){

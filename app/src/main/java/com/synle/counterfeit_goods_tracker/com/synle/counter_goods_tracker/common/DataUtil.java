@@ -215,4 +215,20 @@ public class DataUtil {
         }
     }
 
+    public static String[] getItemHistory(String itemId) {
+        final String url = getURL("/rest/history?id={itemId}");
+
+        final RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        String result = restTemplate.getForObject(url, String.class, itemId);
+
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(result, String[].class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
