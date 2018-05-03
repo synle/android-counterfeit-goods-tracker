@@ -23,13 +23,15 @@ public class DataUtil {
 //    private static final String URL_SITE_REG = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/regsite";
     private static final String URL_ITEM_REG = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/regitem";
     private static final String URL_ITEM_SEND = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/fetch?pk=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAskifo4Vr0+dILiXnoOTEkOMKEBbnJyXigZemO5hSOWQaI9jftH3+sFtn5Z1dzeUDtJlUGUlUqRxssdH0OOw8tPIYy2ao5wQuRymBQ9r14/PIxl0JEomnw1hz7N22QGZDjPwy7tuxm7J0zfX2oOe902bdW18lvTNi/tCm+P7lC3PpfofsuWVvij0fFQwuYxyxZZIM1yQqfVZ3+y2yFY5KRXBMON9vBmQzCa4qMNZOLnQjgwL2TaapAlMts/ZBuGMD8jHcXGZmC0X6vOBPv4nax8Gll/W85G6vFq4H5/+aq7RObcFvMIhN+gdIMtlvgZyCOnVxBBYgWIcNw/63FxUHJwIDAQAB";
-    private static final String URL_ITEM_BLOCK_APPEND = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/append";
+//    private static final String URL_ITEM_BLOCK_APPEND = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/append";
     private static final String URL_ITEM_HISTORY = " http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/history?id=ABC123";
+//    http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/items
+//    http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/enc?text=123&site=site1
 
 
     public static String getURL(String url){
-        String url2 = "http://10.0.2.2:3000" + url;
-//        String url2 = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828" + url;
+//        String url2 = "http://10.0.2.2:3000" + url;
+        String url2 = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828" + url;
 
         System.out.println("url: " + url2);
 
@@ -148,9 +150,13 @@ public class DataUtil {
             final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(newItem), headers);
             final String result = restTemplate.postForObject(url, entity, String.class);
 
+            if(result.indexOf(" ") >= 0){
+                throw new Exception(result);
+            }
+
             newItem.setHash(result);
             return newItem;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -158,8 +164,39 @@ public class DataUtil {
     }
 
 
-    public static void createItem(){
+    public static Item sendItem(Item newItem){
+        final String url = getURL("/rest/append");
 
+
+        final RestTemplate restTemplate = new RestTemplate();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        try {
+            final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(newItem), headers);
+            final String result = restTemplate.postForObject(url, entity, String.class);
+
+            if(result.indexOf(" ") >= 0){
+                throw new Exception(result);
+            }
+
+            newItem.setHash(result);
+            return newItem;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+
+    public static String encrypt(String siteName, String text){
+        final String url = getURL("/rest/enc?text={text}&site={siteName}");
+
+        final RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        return restTemplate.getForObject(url, String.class, text, siteName);
+    }
+
 
 }

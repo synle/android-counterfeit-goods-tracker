@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CommonUtil;
+import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
 public class Setting extends AppCompatActivity {
     @Override
@@ -16,11 +17,7 @@ public class Setting extends AppCompatActivity {
     }
 
     protected void setViewDataForSettingsForm(){
-        String pref_key_site_name = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_name));
-        String pref_key_site_location = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_location));
-        String pref_key_site_prikey = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_prikey));
-        String pref_key_site_pubkey = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_pubkey));
-
+        Site site = new Site(getApplicationContext(), getString(R.string.pref_key_site_name), getString(R.string.pref_key_site_location), getString(R.string.pref_key_site_prikey), getString(R.string.pref_key_site_pubkey));
 
 //        do the view
         TextView txtPublicKey = findViewById(R.id.txtPublicKey);
@@ -28,10 +25,10 @@ public class Setting extends AppCompatActivity {
         TextView txtName = findViewById(R.id.txtName);
         TextView txtLocation = findViewById(R.id.txtLocation);
 
-        txtPublicKey.setText(pref_key_site_pubkey);
-        txtPrivateKey.setText(pref_key_site_prikey);
-        txtName.setText(pref_key_site_name);
-        txtLocation.setText(pref_key_site_location);
+        txtPublicKey.setText(site.getPubkey());
+        txtPrivateKey.setText(site.getPrikey());
+        txtName.setText(site.getName());
+        txtLocation.setText(site.getLocation());
     }
 
     public void onClickCancel(View v){

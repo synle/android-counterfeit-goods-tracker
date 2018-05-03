@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CommonUtil;
+import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.CryptoUtil;
 import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common.DataUtil;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Item;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
@@ -27,25 +28,17 @@ public class ItemCreation extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClickSave(View v){
-        String pref_key_site_name = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_name));
-        String pref_key_site_location = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_location));
-        String pref_key_site_prikey = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_prikey));
-        String pref_key_site_pubkey = CommonUtil.getSettingValue(getApplicationContext(), getString(R.string.pref_key_site_pubkey));
-
+        Site site = new Site(getApplicationContext(), getString(R.string.pref_key_site_name), getString(R.string.pref_key_site_location), getString(R.string.pref_key_site_prikey), getString(R.string.pref_key_site_pubkey));
 
         final String itemName = txtItemName.getText().toString();
-        final String itemId = pref_key_site_name  + "-" + pref_key_site_location + "-" + CommonUtil.getUnixTimestamp();
+        final String itemId = site.getName() + "-" + CommonUtil.getUnixTimestamp();
 
         // generate the payload for the item
-        final String payload = CommonUtil.getPayloadForItem(itemName, pref_key_site_prikey);
-
         final Item newItem = new Item();
         newItem.setName(itemName);
         newItem.setId(itemId);
-        newItem.setNextpubkey(pref_key_site_pubkey);
-        newItem.setPayload(payload);
-
-        new MyAsyncTask(newItem).execute();
+        newItem.setNextpubkey(site.getPubkey());
+        new MyAsyncTask(newItem, site).execute();
     }
 
 
@@ -58,25 +51,45 @@ public class ItemCreation extends AppCompatActivity {
     }
 
     public void onActionSucess(Item i){
-        System.out.println("action success");
-        System.out.println(i);
+        CommonUtil.showToastMessage(getApplicationContext(), "Item created...");
+        finish();
     }
 
 
     private class MyAsyncTask extends AsyncTask<String, Void, Item> {
         Item item;
-        public MyAsyncTask(Item newItem){
-            this.item = newItem;
+        Site site;
+
+        public MyAsyncTask(Item item, Site site){
+            this.item = item;
+            this.site = site;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
 //        name, location
         protected Item doInBackground(String... params) {
             try {
+//                1.	Find an item ID and encrypt it with the private key file
+                final String newPayload = DataUtil.encrypt(site.getName(), item.getId());
+
                 // register the item
-                Item i = DataUtil.registerItem(this.item);
-                return i;
+                item.setPayload(newPayload);
+                item = DataUtil.registerItem(item);
+                System.out.println("1-regItem: " + item.getHash());
+
+
+//                2.	Encrypt MD5 with private key like III.1.
+                final String newPayload2 = DataUtil.encrypt(site.getName(), item.getHash());
+                item.setPayload(newPayload);
+
+                // append it
+                item = DataUtil.sendItem(item);
+                System.out.println("2-appendItem: " + item.getHash());
+
+                return item;
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }
