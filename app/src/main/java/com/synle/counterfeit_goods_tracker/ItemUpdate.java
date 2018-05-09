@@ -17,6 +17,7 @@ import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.c
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ItemUpdate extends ListActivity {
     String itemId;
@@ -43,6 +44,12 @@ public class ItemUpdate extends ListActivity {
         itemId = intent.getStringExtra(getString(R.string.intent_key_item_id));
         itemName = intent.getStringExtra(getString(R.string.intent_key_item_name));
         md5Hash = CommonUtil.getSettingValue(getApplicationContext(), itemId);
+
+        if(md5Hash == null || "".equals(md5Hash)){
+            CommonUtil.showToastMessage(getApplicationContext(), "Item Update is not available. You are not the last owner of this item.");
+            finish();
+            return;
+        }
 
         txtItemId = findViewById(R.id.txtItemId);
         txtItemName = findViewById(R.id.txtItemName);
@@ -74,7 +81,6 @@ public class ItemUpdate extends ListActivity {
         System.out.println("clicked on: " + position + " : " + id);
         Site clickedItem = listItems.get(position);
         destSite = clickedItem;
-        CommonUtil.showToastMessage(getApplicationContext(), "Assigning the item to site: " + clickedItem.toString());
 
         Item updatedItem = new Item();
         updatedItem.setName(itemName);
@@ -102,6 +108,16 @@ public class ItemUpdate extends ListActivity {
     }
 
     public void onActionSuccessAssigned(){
+        // remove the item id hash
+        CommonUtil.unsetSettingValue(getApplicationContext(), itemId);
+
+        // update my item list...
+        // save item id to your set of items...
+        Set<String> myItemIds = CommonUtil.getSettingValueAsStringSet(getApplicationContext(), getString(R.string.pref_key_my_item_ids));
+        myItemIds.remove(itemId);
+        CommonUtil.setSettingValue(getApplicationContext(), getString(R.string.pref_key_my_item_ids), myItemIds);
+
+
         CommonUtil.showToastMessage(getApplicationContext(), "Item assigned to: " + destSite.toString());
         finish();
     }

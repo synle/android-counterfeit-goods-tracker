@@ -13,6 +13,8 @@ import com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.commo
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Item;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
+import java.util.Set;
+
 public class ItemCreation extends AppCompatActivity {
     EditText txtItemName;
 
@@ -58,6 +60,11 @@ public class ItemCreation extends AppCompatActivity {
 
         // save the md5 hash to user pref for later use...
         CommonUtil.setSettingValue(getApplicationContext(), i.getId(), i.getHash());
+
+        // save item id to your set of items...
+        Set<String> myItemIds = CommonUtil.getSettingValueAsStringSet(getApplicationContext(), getString(R.string.pref_key_my_item_ids));
+        myItemIds.add(i.getId());
+        CommonUtil.setSettingValue(getApplicationContext(), getString(R.string.pref_key_my_item_ids), myItemIds);
 
         // done...
         finish();

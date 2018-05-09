@@ -58,6 +58,12 @@ public class ItemHistory extends ListActivity {
         new MyAsyncTask().execute(itemId);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new MyAsyncTask().execute(itemId);
+    }
+
     public void onClickCancel(View v) {
         finish();
     }

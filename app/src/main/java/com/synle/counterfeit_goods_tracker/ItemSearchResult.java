@@ -21,6 +21,7 @@ import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.c
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class ItemSearchResult extends ListActivity {
     Site currentSite;
@@ -84,8 +85,15 @@ public class ItemSearchResult extends ListActivity {
 //        dynamically add items...
 //        https://stackoverflow.com/questions/4540754/dynamically-add-elements-to-a-listview-android
         listItems.clear();
+
+        Set<String> myItemIds = CommonUtil.getSettingValueAsStringSet(getApplicationContext(), getString(R.string.pref_key_my_item_ids));
+
         for(Item item : items){
-            if(searchKeyword == null || searchKeyword.length() == 0){
+            if(showYourItems){
+                if(myItemIds.contains(item.getId())){
+                    listItems.add(item);
+                }
+            } else if(searchKeyword == null || searchKeyword.length() == 0){
                 // empty search keyword, show all
                 listItems.add(item);
 
@@ -110,11 +118,11 @@ public class ItemSearchResult extends ListActivity {
         @Override
         protected Item[] doInBackground(String... params) {
             try {
-                if(showYourItems == false){
+//                if(showYourItems == false){
                     return DataUtil.getAllItems();
-                } else {
-                    return DataUtil.getYourItems(currentSite.getPubkey());
-                }
+//                } else {
+//                    return DataUtil.getYourItems(currentSite.getPubkey());
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

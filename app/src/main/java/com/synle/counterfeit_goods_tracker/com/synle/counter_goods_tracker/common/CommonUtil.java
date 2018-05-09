@@ -6,13 +6,14 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
-import com.synle.counterfeit_goods_tracker.R;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by syle on 4/26/2018.
@@ -43,10 +44,22 @@ public class CommonUtil {
         return sharedPref.getBoolean(key, false);
     }
 
+    public static Set getSettingValueAsStringSet(Context context, String key){
+        SharedPreferences sharedPref = getSharedPreferences(context);
+        return sharedPref.getStringSet(key, new HashSet());
+    }
+
     public static void clearSetting(Context context){
         SharedPreferences sharedPref = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
+        editor.commit();
+    }
+
+    public static void unsetSettingValue(Context context, String key){
+        SharedPreferences sharedPref = getSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(key);
         editor.commit();
     }
 
@@ -64,6 +77,14 @@ public class CommonUtil {
         editor.putBoolean(key, val);
         editor.commit();
     }
+
+    public static void setSettingValue(Context context, String key, Set<String> val){
+        SharedPreferences sharedPref = getSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putStringSet(key, val);
+        editor.commit();
+    }
+
 
     private static SharedPreferences getSharedPreferences(Context context){
         final String MY_PREFERENCE = "MY_PREFERENCE";
