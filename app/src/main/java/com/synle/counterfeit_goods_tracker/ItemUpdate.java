@@ -101,7 +101,10 @@ public class ItemUpdate extends ListActivity {
     public void onActionSucessUpdateAllOwners(Site[] sites){
         listItems.clear();
         for(Site site : sites){
-            listItems.add(site);
+            // filter out your own current site
+            if(site.getName() != currentSite.getName()){
+                listItems.add(site);
+            }
         }
         System.out.println("all owners:" + sites.length);
         adapter.notifyDataSetChanged();
