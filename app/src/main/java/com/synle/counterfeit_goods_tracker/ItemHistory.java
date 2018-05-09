@@ -62,11 +62,22 @@ public class ItemHistory extends ListActivity {
         finish();
     }
 
+
+//    click to select the item
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         System.out.println("clicked on: " + position + " : " + id);
         Site clickedItem = listItems.get(position);
         CommonUtil.showToastMessage(getApplicationContext(), clickedItem.toString());
+    }
+
+
+//    click to update the item
+    public void onUpdateItem(View v){
+        Intent intent = new Intent(this, ItemUpdate.class);
+        intent.putExtra(getString(R.string.intent_key_item_id), itemId);
+        intent.putExtra(getString(R.string.intent_key_item_name), itemName);
+        startActivity(intent);
     }
 
     public void onActionError(){

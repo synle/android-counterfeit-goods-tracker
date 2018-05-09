@@ -55,6 +55,11 @@ public class ItemCreation extends AppCompatActivity {
 
     public void onActionSucess(Item i){
         CommonUtil.showToastMessage(getApplicationContext(), "Item created...");
+
+        // save the md5 hash to user pref for later use...
+        CommonUtil.setSettingValue(getApplicationContext(), i.getId(), i.getHash());
+
+        // done...
         finish();
     }
 
@@ -78,15 +83,6 @@ public class ItemCreation extends AppCompatActivity {
                 item.setPayload(newPayload);
                 item = DataUtil.registerItem(item);
                 System.out.println("1-regItem: " + item.getHash());
-
-
-//                2.	Encrypt MD5 with private key like III.1.
-                final String newPayload2 = DataUtil.encrypt(currentSite.getName(), item.getHash());
-                item.setPayload(newPayload);
-
-                // append it
-                item = DataUtil.sendItem(item);
-                System.out.println("2-appendItem: " + item.getHash());
 
                 return item;
             } catch (Exception e) {

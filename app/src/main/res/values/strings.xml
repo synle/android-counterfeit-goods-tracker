@@ -48,4 +48,6 @@
     <string name="intent_key_item_name">item_name</string>
     <string name="intent_key_show_your_items">intent_key_show_your_items</string>
     <string name="your_items">Your Items</string>
+    <string name="item_last_owner">Last Owner</string>
+    <string name="asssign_owner">Choose one of the owner to assign the item</string>
 </resources>
