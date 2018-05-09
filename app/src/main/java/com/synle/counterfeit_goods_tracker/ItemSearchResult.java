@@ -33,6 +33,8 @@ public class ItemSearchResult extends ListActivity {
     List<Item> listItems=new ArrayList<Item>();
     ArrayAdapter<Item> adapter;
 
+    boolean shouldUsePrefForYourItems = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setTitle(getString(R.string.search_item_results));
@@ -91,22 +93,37 @@ public class ItemSearchResult extends ListActivity {
 //        https://stackoverflow.com/questions/4540754/dynamically-add-elements-to-a-listview-android
         listItems.clear();
 
-        Set<String> myItemIds = CommonUtil.getSettingValueAsStringSet(getApplicationContext(), getString(R.string.pref_key_my_item_ids));
 
-        for(Item item : items){
-            if(showYourItems){
-                if(myItemIds.contains(item.getId())){
+        if(shouldUsePrefForYourItems){
+            Set<String> myItemIds = CommonUtil.getSettingValueAsStringSet(getApplicationContext(), getString(R.string.pref_key_my_item_ids));
+
+            for(Item item : items){
+                if(showYourItems){
+                    if(myItemIds.contains(item.getId())){
+                        listItems.add(item);
+                    }
+                } else if(searchKeyword == null || searchKeyword.length() == 0){
+                    // empty search keyword, show all
+                    listItems.add(item);
+
+                } else if(item.getName().contains(searchKeyword)){
+                    // has keyword, then search for the text...
                     listItems.add(item);
                 }
-            } else if(searchKeyword == null || searchKeyword.length() == 0){
-                // empty search keyword, show all
-                listItems.add(item);
+            }
+        } else {
+            for(Item item : items){
+                if(searchKeyword == null || searchKeyword.length() == 0){
+                    // empty search keyword, show all
+                    listItems.add(item);
 
-            } else if(item.getName().contains(searchKeyword)){
-                // has keyword, then search for the text...
-                listItems.add(item);
+                } else if(item.getName().contains(searchKeyword)){
+                    // has keyword, then search for the text...
+                    listItems.add(item);
+                }
             }
         }
+
         System.out.println("all items:" + items.length);
         System.out.println("matched items:" + listItems.size());
 
@@ -123,11 +140,16 @@ public class ItemSearchResult extends ListActivity {
         @Override
         protected Item[] doInBackground(String... params) {
             try {
-//                if(showYourItems == false){
+                if(shouldUsePrefForYourItems){
                     return DataUtil.getAllItems();
-//                } else {
-//                    return DataUtil.getYourItems(currentSite.getPubkey());
-//                }
+                } else {
+                    if(showYourItems == false){
+                        return DataUtil.getAllItems();
+                    } else {
+                        return DataUtil.getYourItems(currentSite.getPubkey());
+                    }
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

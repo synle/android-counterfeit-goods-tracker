@@ -1,5 +1,7 @@
 package com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.common;
 
+import android.net.Uri;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Item;
 import com.synle.counterfeit_goods_tracker.com.synle.counterfeit_goods_tracker.com.synle.counter_goods_tracker.dao.Site;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -18,20 +21,13 @@ import java.io.IOException;
  */
 
 public class DataUtil {
-//    private static final String URL_SITE_LIST = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/sites";
-//    private static final String URL_SITE_DOWNLOAD = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/download?name=site5";
-//    private static final String URL_SITE_REG = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/regsite";
-    private static final String URL_ITEM_REG = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/regitem";
-    private static final String URL_ITEM_SEND = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/fetch?pk=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAskifo4Vr0+dILiXnoOTEkOMKEBbnJyXigZemO5hSOWQaI9jftH3+sFtn5Z1dzeUDtJlUGUlUqRxssdH0OOw8tPIYy2ao5wQuRymBQ9r14/PIxl0JEomnw1hz7N22QGZDjPwy7tuxm7J0zfX2oOe902bdW18lvTNi/tCm+P7lC3PpfofsuWVvij0fFQwuYxyxZZIM1yQqfVZ3+y2yFY5KRXBMON9vBmQzCa4qMNZOLnQjgwL2TaapAlMts/ZBuGMD8jHcXGZmC0X6vOBPv4nax8Gll/W85G6vFq4H5/+aq7RObcFvMIhN+gdIMtlvgZyCOnVxBBYgWIcNw/63FxUHJwIDAQAB";
-//    private static final String URL_ITEM_BLOCK_APPEND = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/append";
-    private static final String URL_ITEM_HISTORY = " http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/history?id=ABC123";
-//    http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/items
-//    http://ec2-34-192-241-153.compute-1.amazonaws.com:2828/rest/enc?text=123&site=site1
+    public final static String baseUrl = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828";
+    static final ObjectMapper objectMapper = new ObjectMapper();
 
 
     public static String getURL(String url){
 //        String url2 = "http://10.0.2.2:3000" + url;
-        String url2 = "http://ec2-34-192-241-153.compute-1.amazonaws.com:2828" + url;
+        String url2 = baseUrl + url;
 
         System.out.println("url: " + url2);
 
@@ -49,8 +45,7 @@ public class DataUtil {
 
 //        due to back end return text/plain
 //        hacky way to parse json...
-//        https://springframework.guru/processing-json-jackson/
-        final ObjectMapper objectMapper = new ObjectMapper();
+//        https://springframework.guru/processing-json-jackson
         try {
             return objectMapper.readValue(result, Site[].class);
         } catch (Exception e) {
@@ -67,8 +62,6 @@ public class DataUtil {
 
 //            https://www.google.com/search?q=jackson+to+json&oq=jackson+to+json&aqs=chrome..69i57.6205j0j7&sourceid=chrome&ie=UTF-8
 //            Object result = restTemplate.postForEntity(url, s, String.class);
-
-        final ObjectMapper objectMapper = new ObjectMapper();
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -141,7 +134,6 @@ public class DataUtil {
 
 
         final RestTemplate restTemplate = new RestTemplate();
-        final ObjectMapper objectMapper = new ObjectMapper();
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -168,7 +160,6 @@ public class DataUtil {
 
 
         final RestTemplate restTemplate = new RestTemplate();
-        final ObjectMapper objectMapper = new ObjectMapper();
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -205,8 +196,6 @@ public class DataUtil {
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
         String result = restTemplate.getForObject(url, String.class);
 
-
-        final ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(result, Item[].class);
         } catch (Exception e) {
@@ -222,8 +211,6 @@ public class DataUtil {
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
         String result = restTemplate.getForObject(url, String.class, itemId);
 
-
-        final ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(result, String[].class);
         } catch (Exception e) {
@@ -233,14 +220,11 @@ public class DataUtil {
     }
 
     public static Item[] getYourItems(String pubkey) {
-        final String url = getURL("/rest/fetch?pk={pubkey}");
-
         final RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+        final String url = getURL("/rest/fetch?pk={pubkey}");
         String result = restTemplate.getForObject(url, String.class, pubkey);
-
-
-        final ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(result, Item[].class);
         } catch (Exception e) {
