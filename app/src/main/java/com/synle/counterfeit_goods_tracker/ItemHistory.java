@@ -23,6 +23,10 @@ import java.util.Map;
 public class ItemHistory extends ListActivity {
     String itemId;
     String itemName;
+    String md5hash;
+    Site currentSite;
+
+    boolean isFinishLoading = false;
 
     TextView txtItemId;
     TextView txtItemName;
@@ -33,14 +37,16 @@ public class ItemHistory extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle(getString(R.string.item_history));
+        currentSite = new Site(getApplicationContext(), getString(R.string.pref_key_site_name), getString(R.string.pref_key_site_location), getString(R.string.pref_key_site_prikey), getString(R.string.pref_key_site_pubkey));
 
+        setTitle(getString(R.string.item_history));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_history);
 
         Intent intent = getIntent();
         itemId = intent.getStringExtra(getString(R.string.intent_key_item_id));
         itemName = intent.getStringExtra(getString(R.string.intent_key_item_name));
+
 
         txtItemId = findViewById(R.id.txtItemId);
         txtItemName = findViewById(R.id.txtItemName);
@@ -55,13 +61,14 @@ public class ItemHistory extends ListActivity {
                 listItems);
         setListAdapter(adapter);
 
-        new MyAsyncTask().execute(itemId);
+        new MyAsyncTaskFetchHistory().execute(itemId);
+        new MyAsyncTaskFetchMd5Hash().execute(itemId);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        new MyAsyncTask().execute(itemId);
+        new MyAsyncTaskFetchHistory().execute(itemId);
     }
 
     public void onClickCancel(View v) {
@@ -80,9 +87,13 @@ public class ItemHistory extends ListActivity {
 
 //    click to update the item
     public void onUpdateItem(View v){
+        if(isFinishLoading == false && md5hash == null){
+            return;
+        }
         Intent intent = new Intent(this, ItemUpdate.class);
         intent.putExtra(getString(R.string.intent_key_item_id), itemId);
         intent.putExtra(getString(R.string.intent_key_item_name), itemName);
+        intent.putExtra(getString(R.string.pref_key_md5_hash), md5hash);
         startActivity(intent);
     }
 
@@ -101,7 +112,7 @@ public class ItemHistory extends ListActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private class MyAsyncTask extends AsyncTask<String, Void, Site[]> {
+    private class MyAsyncTaskFetchHistory extends AsyncTask<String, Void, Site[]> {
         @Override
         protected Site[] doInBackground(String... params) {
             try {
@@ -121,5 +132,41 @@ public class ItemHistory extends ListActivity {
                 onActionSucess(items);
             }
         }
+    }
+
+
+
+    private class MyAsyncTaskFetchMd5Hash extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                String itemId = params[0];
+
+                Item[] items = DataUtil.getYourItems(currentSite.getPubkey());
+
+                // check to see if this item is yours
+                for(Item item : items){
+                    if(item.getId().equals(itemId)){
+                        return item.getHash();
+                    }
+                }
+                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        public void onPostExecute(String hash) {
+            if(hash != null){
+                onActionSuccessAllowEdit(hash);
+            }
+            isFinishLoading = true;
+        }
+    }
+
+    private void onActionSuccessAllowEdit(String hash) {
+        md5hash = hash;
     }
 }

@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by syle on 4/26/18.
@@ -66,7 +68,7 @@ public class DataUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         try {
-            final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(s), headers);
+            final HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(s), headers);
             final String result = restTemplate.postForObject(url, entity, String.class);
 
 
@@ -138,7 +140,7 @@ public class DataUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         try {
-            final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(newItem), headers);
+            final HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(newItem), headers);
             final String result = restTemplate.postForObject(url, entity, String.class);
 
             if(result.indexOf(" ") >= 0){
@@ -164,7 +166,7 @@ public class DataUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         try {
-            final HttpEntity<String> entity = new HttpEntity<String>(objectMapper.writeValueAsString(newItem), headers);
+            final HttpEntity<String> entity = new HttpEntity<>(objectMapper.writeValueAsString(newItem), headers);
             final String result = restTemplate.postForObject(url, entity, String.class);
 
             if(result.indexOf(" ") >= 0){
@@ -220,12 +222,16 @@ public class DataUtil {
     }
 
     public static Item[] getYourItems(String pubkey) {
-        final RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        final String url = getURL("/rest/fetch");
 
-        final String url = getURL("/rest/fetch?pk={pubkey}");
-        String result = restTemplate.getForObject(url, String.class, pubkey);
+
+        final RestTemplate restTemplate = new RestTemplate();
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         try {
+            final HttpEntity<String> entity = new HttpEntity<>(pubkey, headers);
+            final String result = restTemplate.postForObject(url, entity, String.class);
             return objectMapper.readValue(result, Item[].class);
         } catch (Exception e) {
             e.printStackTrace();

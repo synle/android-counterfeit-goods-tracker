@@ -43,7 +43,12 @@ public class ItemUpdate extends ListActivity {
         Intent intent = getIntent();
         itemId = intent.getStringExtra(getString(R.string.intent_key_item_id));
         itemName = intent.getStringExtra(getString(R.string.intent_key_item_name));
-        md5Hash = CommonUtil.getSettingValue(getApplicationContext(), itemId);
+        md5Hash = intent.getStringExtra(getString(R.string.pref_key_md5_hash));
+
+        if(md5Hash == null || "".equals(md5Hash)){
+            md5Hash = CommonUtil.getSettingValue(getApplicationContext(), itemId);
+        }
+
 
         if(md5Hash == null || "".equals(md5Hash)){
             CommonUtil.showToastMessage(getApplicationContext(), "Item Update is not available. You are not the last owner of this item.");

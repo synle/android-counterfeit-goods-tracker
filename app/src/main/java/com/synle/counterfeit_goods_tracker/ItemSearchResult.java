@@ -33,7 +33,8 @@ public class ItemSearchResult extends ListActivity {
     List<Item> listItems=new ArrayList<Item>();
     ArrayAdapter<Item> adapter;
 
-    boolean shouldUsePrefForYourItems = true;
+//    boolean shouldUsePrefForYourItems = true;
+    boolean shouldUsePrefForYourItems = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
