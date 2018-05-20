@@ -60,15 +60,13 @@ public class ItemHistory extends ListActivity {
                 android.R.layout.simple_list_item_1,
                 listItems);
         setListAdapter(adapter);
-
-        new MyAsyncTaskFetchHistory().execute(itemId);
-        new MyAsyncTaskFetchMd5Hash().execute(itemId);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         new MyAsyncTaskFetchHistory().execute(itemId);
+        new MyAsyncTaskFetchMd5Hash().execute(itemId);
     }
 
     public void onClickCancel(View v) {

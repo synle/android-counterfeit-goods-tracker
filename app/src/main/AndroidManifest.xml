@@ -19,17 +19,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AuthenticationOption" />
-        <activity android:name=".AuthenticationConsumer" />
-        <activity android:name=".AuthenticationAgency" />
-        <activity android:name=".DashboardAgency" />
-        <activity android:name=".DashboardConsumer" />
-        <activity android:name=".ItemHistory" />
-        <activity android:name=".ItemCreation" />
-        <activity android:name=".ItemUpdate" />
-        <activity android:name=".ItemSearchForm" />
-        <activity android:name=".ItemSearchResult" />
-        <activity android:name=".Setting"></activity>
+        <activity android:name=".AuthenticationOption" android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".AuthenticationConsumer" android:launchMode="singleTop"
+            android:parentActivityName=".AuthenticationOption" />
+        <activity android:name=".AuthenticationAgency" android:launchMode="singleTop"
+            android:parentActivityName=".AuthenticationOption" />
+        <activity android:name=".DashboardAgency" android:launchMode="singleTop"
+            android:parentActivityName=".AuthenticationAgency" />
+        <activity android:name=".DashboardConsumer" android:launchMode="singleTop"
+            android:parentActivityName=".AuthenticationConsumer"/>
+        <activity android:name=".ItemHistory" android:launchMode="singleTop" />
+        <activity android:name=".ItemCreation" android:launchMode="singleTop" />
+        <activity android:name=".ItemUpdate" android:launchMode="singleTop" />
+        <activity android:name=".ItemSearchForm" android:launchMode="singleTop" />
+        <activity android:name=".ItemSearchResult" android:launchMode="singleTop" />
+        <activity android:name=".Setting" android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>

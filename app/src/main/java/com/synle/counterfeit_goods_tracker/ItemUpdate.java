@@ -69,11 +69,15 @@ public class ItemUpdate extends ListActivity {
                 android.R.layout.simple_list_item_1,
                 listItems);
         setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         new MyAsyncTaskGetItemOwners().execute(itemId);
         new MyAsyncTaskGetAllOwners().execute();
     }
-
 
     public void onClickCancel(View v) {
         finish();

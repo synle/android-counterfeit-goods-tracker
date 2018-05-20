@@ -14,6 +14,11 @@ public class Setting extends AppCompatActivity {
         setTitle(getString(R.string.settings));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setViewDataForSettingsForm();
     }
 
